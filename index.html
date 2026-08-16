@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Comrades Official DayZ Server</title>
-<link rel="icon" type="image/jpeg" href="Untitled.jpg">
+<link rel="icon" type="image/png" href="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.9OrmVJsoQBjxlThX05XbjgHaEK%3Fpid%3DApi&f=1&ipt=32e01dcdcf643eef6aa1c724a3eb3ffc5097fc86033097c41deca2d83cc272c0&ipo=images">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Black+Ops+One&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -76,6 +76,13 @@
   nav a{text-decoration:none; color:var(--ink-dim); border-bottom:1px solid transparent; padding-bottom:3px; transition:color .15s, border-color .15s;}
   nav a:hover, nav a:focus-visible{color:var(--gold); border-color:var(--gold); outline:none;}
   @media (max-width:760px){ nav{display:none;} }
+
+  .updates-btn{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase;
+    text-decoration:none; color:var(--gold); border:1px solid var(--gold); border-radius:3px;
+    padding:8px 14px; white-space:nowrap; transition:background .15s, color .15s;
+  }
+  .updates-btn:hover{ background:var(--gold); color:var(--bg); }
 
   /* ---------- Hero ---------- */
   .hero{
@@ -162,11 +169,6 @@
   @keyframes scroll{ 0%{transform:translateX(0);} 100%{transform:translateX(-100%);} }
   .ticker-wrap{padding-left:150px;}
 
-  @media (max-width: 480px){
-    .ticker-wrap{padding-left:110px;}
-    .ticker-tag{font-size:9px; padding:0 8px;}
-  }
-
   /* ---------- Section shell ---------- */
   section{max-width:1180px; margin:0 auto; padding:76px 24px;}
   .sec-head{margin-bottom:36px; display:flex; align-items:baseline; gap:16px; flex-wrap:wrap;}
@@ -207,7 +209,7 @@
   .gauge-card{
     background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:32px;
   }
-  .gauge-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;}
+  .gauge-top{display:flex; justify-between; align-items:center; margin-bottom:18px;}
   .gauge-top .label{font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); display:flex; align-items:center; gap:7px;}
   .dot{width:8px; height:8px; border-radius:50%; background:var(--green-dot); box-shadow:0 0 8px var(--green-dot); animation:pulse 2.2s infinite;}
   @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:0.35;}}
@@ -250,7 +252,7 @@
 <header>
   <div class="header-inner">
     <div class="brand">
-      <img src="Untitled.jpg" alt="Comrades server insignia">
+      <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.9OrmVJsoQBjxlThX05XbjgHaEK%3Fpid%3DApi&f=1&ipt=32e01dcdcf643eef6aa1c724a3eb3ffc5097fc86033097c41deca2d83cc272c0&ipo=images" alt="Comrades server insignia">
       <div class="brand-name">COMRADES<span>OFFICIAL DAYZ SERVER — LIVONIA</span></div>
     </div>
     <nav>
@@ -259,16 +261,16 @@
       <a href="#loadout">Loadout</a>
       <a href="#population">Population</a>
       <a href="#connect">Connect</a>
-      <a href="https://locust-4402.github.io/ComradesOfficialUpdates/">Updates</a>
     </nav>
+    <a class="updates-btn" href="https://locust-4402.github.io/ComradesOfficialUpdates/">Updates</a>
   </div>
 </header>
 
 <div class="hero">
-  <img class="hero-stamp" src="Untitled.jpg" alt="">
+  <img class="hero-stamp" src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.9OrmVJsoQBjxlThX05XbjgHaEK%3Fpid%3DApi&f=1&ipt=32e01dcdcf643eef6aa1c724a3eb3ffc5097fc86033097c41deca2d83cc272c0&ipo=images" alt="">
   <div class="hero-inner">
     <div class="patch">
-      <img src="Untitled.jpg" alt="Comrades insignia patch">
+      <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.9OrmVJsoQBjxlThX05XbjgHaEK%3Fpid%3DApi&f=1&ipt=32e01dcdcf643eef6aa1c724a3eb3ffc5097fc86033097c41deca2d83cc272c0&ipo=images" alt="Comrades insignia patch">
       <div class="patch-text"><b>UNIT INSIGNIA</b>ISSUED TO ALL COMRADES</div>
     </div>
     <h1>Survive Livonia.<br>Trust <em>no one.</em></h1>
