@@ -239,6 +239,36 @@
   .pop-note p{color:var(--ink-dim); font-size:14px; line-height:1.7;}
   .pop-note ul{margin-top:14px; padding-left:18px; color:var(--ink-dim); font-size:14px; line-height:1.8;}
 
+  /* ---------- Confession Booth ---------- */
+  .confess-panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:6px;
+    padding:36px 40px; max-width:640px;
+  }
+  .confess-label{
+    display:block; font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:0.14em;
+    text-transform:uppercase; color:var(--ink-dim); margin-bottom:8px;
+  }
+  .confess-input, .confess-textarea{
+    width:100%; font-family:'JetBrains Mono', monospace; font-size:13px;
+    background:var(--bg); border:1px solid var(--line); border-radius:3px;
+    padding:12px 14px; color:var(--ink); resize:vertical; transition:border-color .15s;
+  }
+  .confess-input:focus, .confess-textarea:focus{ outline:none; border-color:var(--gold); }
+  .confess-textarea{min-height:110px; margin-bottom:18px;}
+  .confess-input{margin-bottom:18px;}
+  .confess-field{position:absolute; left:-9999px; top:-9999px;}
+  .confess-submit{
+    font-family:'JetBrains Mono', monospace; font-size:12px; letter-spacing:0.12em; text-transform:uppercase;
+    background:var(--rust); color:#f4ead1; border:1px solid #d95a2a; border-radius:3px;
+    padding:13px 22px; cursor:pointer; transition:transform .12s ease, filter .12s ease, opacity .15s;
+  }
+  .confess-submit:hover{transform:translateY(-2px);}
+  .confess-submit:disabled{opacity:0.5; cursor:not-allowed; transform:none;}
+  .confess-status{
+    margin-top:14px; font-family:'JetBrains Mono', monospace; font-size:12px; color:var(--gold); min-height:16px;
+  }
+  .confess-note{color:var(--ink-dim); font-size:13px; margin-bottom:22px; max-width:520px;}
+
   /* ---------- Connect panel ---------- */
   .connect{
     background:var(--panel); border:1px solid var(--line); border-radius:6px;
@@ -281,6 +311,7 @@
       <a href="#rules">Rules</a>
       <a href="#loadout">Loadout</a>
       <a href="#population">Population</a>
+      <a href="#confess">Confess</a>
       <a href="#connect">Connect</a>
     </nav>
     <a class="updates-btn" href="https://locust-4402.github.io/ComradesOfficialUpdates/">Updates</a>
@@ -401,6 +432,26 @@
   </div>
 </section>
 
+<section id="confess">
+  <div class="sec-head">
+    <h2>Confession Booth</h2>
+    <div class="rule"></div>
+  </div>
+  <p class="sec-sub">Get it off your chest, Comrade. Confessions are reviewed by command staff only — nothing is posted publicly.</p>
+  <div class="confess-panel">
+    <p class="confess-note">Admit to a betrayal, a KOS you feel bad about, or whatever else is weighing on you out there in Chernarus. Signing a callsign is optional.</p>
+    <form id="confess-form">
+      <label class="confess-label" for="confess-name">Callsign (optional)</label>
+      <input class="confess-input" type="text" id="confess-name" maxlength="40" placeholder="e.g. John Doe">
+      <label class="confess-label" for="confess-msg">Your confession</label>
+      <textarea class="confess-textarea" id="confess-msg" maxlength="800" placeholder="Speak freely, Comrade..." required></textarea>
+      <input class="confess-field" type="text" id="confess-hp" name="website" tabindex="-1" autocomplete="off">
+      <button class="confess-submit" type="submit" id="confess-submit">Transmit Confession</button>
+      <div class="confess-status" id="confess-status"></div>
+    </form>
+  </div>
+</section>
+
 <section id="connect">
   <div class="sec-head">
     <h2>Connect</h2>
@@ -461,6 +512,65 @@
 
   const track = document.getElementById('ticker-track');
   track.innerHTML += track.innerHTML;
+
+  // ---------- Confession Booth ----------
+  const CONFESSION_WEBHOOK = "https://discord.com/api/webhooks/1541307415893381162/XKhQRRLZSAfKQ8ztBmXsFSClHIch6paA-dgkTGXbsMYQt6ARJ4S7Xq2IkTTrlOtxo9HZ";
+  const confessForm = document.getElementById('confess-form');
+  const confessStatus = document.getElementById('confess-status');
+  const confessSubmit = document.getElementById('confess-submit');
+  let lastSubmit = 0;
+
+  confessForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Honeypot check — bots tend to fill every field
+    const honeypot = document.getElementById('confess-hp').value;
+    if (honeypot) { return; }
+
+    // Basic client-side cooldown to deter rapid-fire spam
+    const now = Date.now();
+    if (now - lastSubmit < 15000) {
+      confessStatus.textContent = "Hold up, Comrade — wait a few seconds before sending another.";
+      return;
+    }
+
+    const name = document.getElementById('confess-name').value.trim();
+    const msg = document.getElementById('confess-msg').value.trim();
+    if (!msg) return;
+
+    confessSubmit.disabled = true;
+    confessStatus.textContent = "Transmitting...";
+
+    const payload = {
+      username: "The Commissar",
+      embeds: [{
+        title: "New Confession",
+        description: msg.slice(0, 1900),
+        color: 7419166,
+        fields: [{ name: "Callsign", value: name ? name : "Anonymous", inline: true }],
+        timestamp: new Date().toISOString()
+      }]
+    };
+
+    try {
+      const res = await fetch(CONFESSION_WEBHOOK, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        confessStatus.textContent = "Transmission received, Comrade. Command staff has been notified.";
+        confessForm.reset();
+        lastSubmit = now;
+      } else {
+        confessStatus.textContent = "Transmission failed. Try again shortly.";
+      }
+    } catch (err) {
+      confessStatus.textContent = "Transmission failed. Check your connection and try again.";
+    } finally {
+      confessSubmit.disabled = false;
+    }
+  });
 </script>
 
 </body>
